@@ -32,6 +32,7 @@ class BookShelf extends Component {
       if (book.id === b.id) {
         b.shelf = book.shelf
       }
+      BooksAPI.update(book, book.shelf)
       return b
     })
     this.setState({ books: books })
