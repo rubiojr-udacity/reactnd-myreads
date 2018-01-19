@@ -3,10 +3,6 @@ import PropTypes from 'prop-types'
 
 class Book extends Component {
 
-  state = {
-    shelf: this.props.shelf
-  }
-
   static propTypes = {
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
@@ -17,8 +13,7 @@ class Book extends Component {
   }
 
   handleShelfChange = (event) => {
-    this.setState({shelf: event.target.value})
-    console.log(event.target.value)
+    this.props.bookShelfChanged({ id: this.props.id, shelf: event.target.value })
   }
 
   render() {
@@ -27,7 +22,7 @@ class Book extends Component {
         <div className="book-top">
           <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${this.props.imageLinks.smallThumbnail})` }}></div>
           <div className="book-shelf-changer">
-            <select value={this.state.shelf} onChange={this.handleShelfChange}>
+            <select value={this.props.shelf} onChange={this.handleShelfChange}>
       	<option value="none" disabled>Move to...</option>
       	<option value="currentlyReading">Currently Reading</option>
       	<option value="wantToRead">Want to Read</option>

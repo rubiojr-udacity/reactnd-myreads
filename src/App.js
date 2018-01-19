@@ -1,5 +1,4 @@
 import React from 'react'
-import * as BooksAPI from './BooksAPI'
 import './App.css'
 import BookShelf from './BookShelf'
 //import BooksAPI from './BooksAPI'
@@ -13,17 +12,6 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     showSearchPage: false,
-    books: []
-  }
-
-  componentDidMount() {
-    BooksAPI.getAll().then((books) => {
-      console.log(books)
-      this.setState({ books })
-    })
-  }
-
-  removeBook = (book) => {
   }
 
   render() {
@@ -51,10 +39,7 @@ class BooksApp extends React.Component {
             </div>
           </div>
         ) : (
-          <BookShelf
-	     onDeleteBook={this.removeBook}
-	     books={this.state.books}
-	  />
+          <BookShelf />
         )}
       </div>
     )
