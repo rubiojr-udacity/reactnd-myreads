@@ -23,7 +23,6 @@ class BookList extends Component {
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-      console.log(books)
       this.setState({ books })
     })
   }
@@ -38,7 +37,7 @@ class BookList extends Component {
 
   render() {
     const { books, query } = this.state
-    
+
     let showingBooks
     if (query) {
       const match = new RegExp(escapeRegExp(query), 'i')
