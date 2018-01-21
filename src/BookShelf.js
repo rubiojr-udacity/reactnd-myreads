@@ -11,15 +11,20 @@ class BookShelf extends Component {
 
   render() {
     const {title, shelfName, shelfChanged, books} = this.props
+    const filteredBooks = books.filter((book) => book.shelf === shelfName )
+    const shelfBooks = filteredBooks.map((book) => (<li key={book.id}><Book bookShelfChanged={shelfChanged} {...book}/></li>))
 
     return (
       <div className="bookshelf">
         <h2 className="bookshelf-title">{title}</h2>
-        <div className="bookshelf-books">
-          <ol className="books-grid">
-      {books.filter((book) => book.shelf === shelfName ).map((book) => (<li key={book.id}><Book bookShelfChanged={shelfChanged} {...book}/></li>))}
-          </ol>
-        </div>
+        {filteredBooks.length > 0 ? (
+          <div className="bookshelf-books">
+            <ol className="books-grid">
+             {shelfBooks}
+            </ol>
+          </div>
+        ) : ( <div>The shelf is empty</div> )
+        }
       </div>
     )
   }
