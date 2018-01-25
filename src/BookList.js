@@ -1,24 +1,11 @@
 import React, { Component } from 'react';
-import escapeRegExp from 'escape-string-regexp'
-import sortBy from 'sort-by'
-import * as BooksAPI from './BooksAPI'
 import BookShelf from './BookShelf'
+import * as BooksAPI from './BooksAPI'
 
 class BookList extends Component {
-  state = {
-    query: '',
-    books: []
-  }
 
-  shelfChanged = (book) => {
-    var books = this.state.books.map((b) => {
-      if (book.id === b.id) {
-        b.shelf = book.shelf
-      }
-      BooksAPI.update(book, book.shelf)
-      return b
-    })
-    this.setState({ books: books })
+  state = {
+    books: []
   }
 
   componentDidMount() {
@@ -27,26 +14,22 @@ class BookList extends Component {
     })
   }
 
-  updateQuery = (query) => {
-    this.setState({ query: query.trim() })
-  }
-
-  clearQuery = () => {
-    this.setState({ query: '' })
+  shelfChanged = (book) => {
+    for (var b of this.state.books) {
+      if (book.id !== b.id) {
+        continue
+      }
+      b.shelf = book.shelf
+      this.setState({ books: this.state.books })
+      BooksAPI.update(book, book.shelf)
+      console.log("book shelf updated remotely")
+      break
+    }
   }
 
   render() {
-    const { books, query } = this.state
-
-    let showingBooks
-    if (query) {
-      const match = new RegExp(escapeRegExp(query), 'i')
-      showingBooks = books.filter((book) => match.test(book.name))
-    } else {
-      showingBooks = books
-    }
-
-    showingBooks.sort(sortBy('name'))
+    const { books } = this.state
+    const shelfChanged = this.shelfChanged
 
     return (
       <div className="list-books">
@@ -55,9 +38,9 @@ class BookList extends Component {
         </div>
         <div className="list-books-content">
           <div>
-            <BookShelf shelfChanged={this.shelfChanged} shelfName="currentlyReading" books={books} title={"Currently Reading"} />
-            <BookShelf shelfChanged={this.shelfChanged} shelfName="wantToRead" books={books} title={"Want to Read"} />
-            <BookShelf shelfChanged={this.shelfChanged} shelfName="read" books={books} title={"Read"} />
+            <BookShelf shelfChanged={shelfChanged} shelfName="currentlyReading" books={books} title={"Currently Reading"} />
+            <BookShelf shelfChanged={shelfChanged} shelfName="wantToRead" books={books} title={"Want to Read"} />
+            <BookShelf shelfChanged={shelfChanged} shelfName="read" books={books} title={"Read"} />
           </div>
         </div>
       </div>

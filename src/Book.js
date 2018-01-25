@@ -6,9 +6,9 @@ class Book extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    shelf: PropTypes.string.isRequired,
-    authors: PropTypes.array.isRequired,
+    description: PropTypes.string,
+    shelf: PropTypes.string,
+    authors: PropTypes.array,
     imageLinks: PropTypes.object.isRequired,
     bookShelfChanged: PropTypes.func.isRequired
   }
@@ -38,5 +38,11 @@ class Book extends Component {
     )
   }
 }
+
+// Specifies the default values for props:
+Book.defaultProps = {
+  authors: [],
+  description: ""
+};
 
 export default Book
