@@ -3,6 +3,7 @@ import BookShelf from './BookShelf'
 import escapeRegExp from 'escape-string-regexp'
 import * as BooksAPI from './BooksAPI'
 import { Link } from 'react-router-dom'
+import {NotificationManager} from 'react-notifications';
 
 const SEARCH_TERMS = ['Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS']
 
@@ -27,6 +28,7 @@ class SearchBar extends Component {
     this.setState({ query: query.trim() })
 
     if (query && (query.length > 1) && this.validSearchTerm(query)) {
+      NotificationManager.info('Searching...', '', 1000);
       BooksAPI.search(query).then((books) => {
         this.setState({ found: books})
       })
@@ -35,12 +37,10 @@ class SearchBar extends Component {
     }
   }
 
-  clearQuery = () => {
-    this.setState({ query: '' })
-  }
-
   shelfChanged = (book) => {
     BooksAPI.update(book, book.shelf)
+    console.log("notification")
+    NotificationManager.success('Book added', '', 1000);
   }
 
   render () {
@@ -64,7 +64,7 @@ class SearchBar extends Component {
                        displayHeader={false}
                        shelfName=""
                        emptyMsg="No books found"
-                       books={found} title={"Search Results"} />
+                       books={found || []} title={"Search Results"} />
           </ol>
         </div>
       </div>

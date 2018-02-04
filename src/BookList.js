@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import BookShelf from './BookShelf'
 import * as BooksAPI from './BooksAPI'
+import {NotificationManager} from 'react-notifications';
 
 class BookList extends Component {
 
@@ -9,6 +10,7 @@ class BookList extends Component {
   }
 
   componentDidMount() {
+    NotificationManager.info("Retrieving books...","", 1000)
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
     })
@@ -23,6 +25,7 @@ class BookList extends Component {
       this.setState({ books: this.state.books })
       BooksAPI.update(book, book.shelf)
       console.log("book shelf updated remotely")
+      NotificationManager.success("Book updated", "", 1000)
       break
     }
   }
