@@ -105,7 +105,7 @@ class SearchBar extends Component {
   }
 
   updateQuery = (query) => {
-    this.setState({query: query.trim()})
+    this.setState({query: query })
 
     if (query && (query.length > 1) && this.validSearchTerm(query)) {
       NotificationManager.info('Searching...', '', 1000);
