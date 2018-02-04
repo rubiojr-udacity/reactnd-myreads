@@ -94,6 +94,8 @@ class SearchBar extends Component {
     found: []
   }
 
+  tstamp = new Date().getTime()
+
   validSearchTerm(term) {
     let match = new RegExp(escapeRegExp(term), 'i')
     for (var t of SEARCH_TERMS) {
@@ -108,7 +110,11 @@ class SearchBar extends Component {
     this.setState({query: query })
 
     if (query && (query.length > 1) && this.validSearchTerm(query)) {
-      NotificationManager.info('Searching...', '', 1000);
+      let now = new Date().getTime()
+      if ((now - this.tstamp) > 2000) {
+        NotificationManager.info('Searching...', '', 1000);
+        this.tstamp = now
+      }
       BooksAPI.search(query).then((books) => {
         this.setState({found: books})
       })
