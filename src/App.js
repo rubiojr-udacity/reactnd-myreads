@@ -9,7 +9,7 @@ import {NotificationContainer} from 'react-notifications'
 class BooksApp extends React.Component {
   render() {
     return (<div className='app'>
-      <Route exact="exact" path='/' component={BookList}/>
+      <Route exact path='/' component={BookList}/>
       <Route path='/search' component={SearchPage}/>
       <div className='open-search'>
         <Link to='/search'>Add a book</Link>
