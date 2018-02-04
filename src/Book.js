@@ -1,7 +1,12 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import * as BooksAPI from './BooksAPI'
 
 class Book extends Component {
+
+  state = {
+    shelf: 'none'
+  }
 
   static propTypes = {
     id: PropTypes.string.isRequired,
@@ -17,6 +22,13 @@ class Book extends Component {
     this.props.bookShelfChanged({id: this.props.id, shelf: event.target.value})
   }
 
+  componentDidMount() {
+    // FIXME: Extremely inefficient, one GET per book result returned
+    BooksAPI.get(this.props.id).then(book => {
+      this.setState({shelf: book.shelf})
+    })
+  }
+
   render() {
     return (<div className='book'>
       <div className='book-top'>
@@ -26,7 +38,7 @@ class Book extends Component {
             backgroundImage: `url(${this.props.imageLinks.smallThumbnail})`
           }}></div>
         <div className='book-shelf-changer'>
-          <select value={this.props.shelf} onChange={this.handleShelfChange}>
+          <select value={this.state.shelf} onChange={this.handleShelfChange}>
             <option value='none' disabled='disabled'>Move to...</option>
             <option value='currentlyReading'>Currently Reading</option>
             <option value='wantToRead'>Want to Read</option>
@@ -44,7 +56,8 @@ class Book extends Component {
 // Specifies the default values for props:
 Book.defaultProps = {
   authors: [],
-  description: ''
+  description: '',
+  shelf: 'none'
 }
 
 export default Book

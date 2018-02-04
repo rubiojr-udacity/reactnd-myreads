@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import Book from './Book'
 import PropTypes from 'prop-types'
 
@@ -12,26 +12,32 @@ class BookShelf extends Component {
   }
 
   render() {
-    const {emptyMsg, title, shelfName, shelfChanged, displayHeader, books} = this.props;
+    const {
+      emptyMsg,
+      title,
+      shelfName,
+      shelfChanged,
+      displayHeader,
+      books
+    } = this.props;
     let filteredBooks = books;
-    if (shelfName !== "") {
-      filteredBooks = books.filter((book) => book.shelf === shelfName );
-    }
-    const shelfBooks = filteredBooks.map((book) => (<li key={book.id}><Book bookShelfChanged={shelfChanged} {...book}/></li>));
 
-    return (
-      <div className='bookshelf'>
-        { displayHeader && (<h2 className='bookshelf-title'>{title}</h2>) }
-        {filteredBooks.length > 0 ? (
-          <div className='bookshelf-books'>
+    if (shelfName !== "") {
+      filteredBooks = books.filter((book) => book.shelf === shelfName);
+    }
+
+    return (<div className='bookshelf'>
+      {displayHeader && (<h2 className='bookshelf-title'>{title}</h2>)}
+      {
+        filteredBooks.length > 0
+          ? (<div className='bookshelf-books'>
             <ol className='books-grid'>
-              {shelfBooks}
+              {filteredBooks.map(book => (<li key={book.id}><Book bookShelfChanged={shelfChanged} {...book}/></li>))}
             </ol>
-          </div>
-        ) : ( <div>{emptyMsg}</div> )
-        }
-      </div>
-    )
+          </div>)
+          : (<div>{emptyMsg}</div>)
+      }
+    </div>)
   }
 }
 
