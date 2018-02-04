@@ -17,16 +17,18 @@ class BookList extends Component {
   }
 
   shelfChanged = (book) => {
-    for (var b of this.state.books) {
-      if (book.id !== b.id) {
-        continue
+    this.setState(prev => {
+      for (var b of prev.books) {
+        if (book.id !== b.id) {
+          continue
+        }
+        b.shelf = book.shelf
+        BooksAPI.update(book, book.shelf)
+        NotificationManager.success('Book updated', '', 1000)
+        break
       }
-      b.shelf = book.shelf
-      this.setState({books: this.state.books})
-      BooksAPI.update(book, book.shelf)
-      NotificationManager.success('Book updated', '', 1000)
-      break
-    }
+      return {books: prev.books}
+    })
   }
 
   render() {
